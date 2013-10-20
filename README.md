@@ -9,7 +9,7 @@ The three R scripts...
 	- [02_newData.R](https://github.com/danieldinsdale/stat545a-2013-hw06_dinsdale-dan/blob/master/02_newData.R)
 	- [FinalScript.R](https://github.com/danieldinsdale/stat545a-2013-hw06_dinsdale-dan/blob/master/FinalScript.R)
 	- [gapminderDataFiveYear.txt](https://github.com/danieldinsdale/stat545a-2013-hw06_dinsdale-dan/blob/master/gapminderDataFiveYear.txt) And finally the data
-* The final script should be opened in RStudio and sourced.
+* The FinalScript.R script should be opened in RStudio and sourced.
 * Following a successful source the following files should have been created:
 	- [gapminderOrderedContinents.txt](https://github.com/danieldinsdale/stat545a-2013-hw06_dinsdale-dan/blob/master/gapminderOrderedContinents.txt)
 	- [gapminderWithInterceptsOrdered.txt](https://github.com/danieldinsdale/stat545a-2013-hw06_dinsdale-dan/blob/master/gapminderWithInterceptsOrdered.txt)
