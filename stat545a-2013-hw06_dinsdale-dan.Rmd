@@ -1,0 +1,133 @@
+Final Project STAT 545A - Daniel Dinsdale
+========================================================
+
+```{r include = FALSE}
+library(ggplot2)
+library(lattice)
+library(plyr)
+require(graphics)
+library(RColorBrewer)
+gDat <- read.delim("gapminderDataFiveYear.txt")
+lifeExpCont <- ddply(gDat, .(continent, year), summarize, meanLifeExp = mean(lifeExp))
+```
+### Introduction
+This document provides a means of outlining the final project which can be accessed [here](http://www.gapminder.org/). This link includes instructions on how to run the pipeline through R.
+
+### Life Expectancy Analysis
+Initial plots were primarily to show the relationship between mean life expectancy in years for each of the 5 continents since 1952. The first plot shows the mean values, whilst the second plot fits a linear model to the data. This will be done on a country by country basis by myself later in the document. 
+```{r}
+p1 <- ggplot(lifeExpCont, aes(x = year, y = meanLifeExp, colour = continent))
+p1 + geom_line() +  ylab("Mean Life Expectancy (Years)") + xlab("Year")
+p2 <- ggplot(gDat, aes(x = year, y = lifeExp, colour = continent))
+p2 + geom_smooth(method = "lm") +  ylab(" Life Expectancy (Years)") + xlab("Year")
+```
+Following this a layered histogram was also observed. Note that colours used here are the unedited R palate, whilst later on I will experiment with RColorBrewer.
+```{r}
+p3 <- ggplot(gDat, aes(x = lifeExp, fill = continent))
+p3 + geom_bar(binwidth = 1.5) + ylab("Count") + xlab("Life Expectancy")
+```
+This plot shows the proportion of each life expectancy that each continent provides. So for example a life expectancy of around 40 was far more likely to be from Africa than any other continent. In fact Oceania has no life expectancy this low. This histogram has to be taken with a pinch of salt however, as these are counts and not all continents have the same amount of data. Oceania for instance has a very small number of data points.
+```{r include = FALSE}
+gDat <- within(gDat, continent <- reorder(continent, lifeExp, mean)) #reorder continents
+gDat <- arrange(gDat, continent) #reorder complete
+write.table(gDat, "gapminderOrderedContinents.txt", quote = FALSE,
+            sep = "\t", row.names = FALSE)
+#levels(jDat$continent)
+#reference http://www.stat.ubc.ca/~jenny/STAT545A/block04_dataAggregation.html
+gFit <- function(x){
+  lm(lifeExp ~ I(year - 1952), x)
+}
+gFun <- function(x) {
+  estCoefs <- coef(lm(lifeExp ~ I(year - 1952), x))
+  estResid <- summary(gFit(x))$sigma
+  estAll <- c(estCoefs, estResid)
+  names(estAll) <- c("intercept", "slope", "residual")
+  return(estAll)
+}
+jDat <- droplevels(subset(gDat, continent != "Oceania"))
+gCoefs <- ddply(jDat, ~country + continent, gFun)
+gCoefs <- arrange(gCoefs, continent)
+write.table(gCoefs, "gapminderWithInterceptsOrdered.txt", quote = FALSE,
+            sep = "\t", row.names = FALSE)
+```
+From here I ordered continents within the file based on mean life expectancy (as opposed to alphabetic order). This swapped Asia with the Americas and the new file was named "gapminderOrderedContinents.txt". Note that at this point I removed Oceania to prevent it from cluttering up my plots. With this new file I also wrote a function providing linear models of life expectancy for each country. Thanks to Jenny for providing examples of this in lectures. Using the newly ordered file I added three columns-intercept, slope and residual. I then wrote this to file under the title "gapminderWithInterceptsOrdered.txt".
+
+### Linear Models
+With the new file I used a second R script to do the following analysis.
+
+First of all I identified the best and worst three countries for mean life expectancy in all continents except Oceania (which I will ignore from now on). Writing two new files with only these extreme countries, "gapminderbestworstcoef.txt" for intercept, slope and residual and "gapminderbestworstlife.txt" for the yearly mean life expectancy I could then produce some interesting plots. Note that within continents these were all arranged in order of life expectancy.
+
+```{r include = FALSE}
+library(ggplot2)
+library(lattice)
+library(plyr)
+require(graphics)
+library(RColorBrewer)
+gDat <- read.delim("gapminderOrderedContinents.txt")
+gDat <-
+  within(gDat, {
+    continent <- factor(as.character(continent), levels = unique(gDat$continent))
+  })
+str(gDat$continent)
+jDat <- droplevels(subset(gDat, continent != "Oceania"))
+gCoefs <- read.delim("gapminderWithInterceptsOrdered.txt") 
+gCoefs <-
+  within(gCoefs, {
+    continent <- factor(as.character(continent), levels = unique(gCoefs$continent))
+  }) #orders continents as they are in file
+str(gCoefs)
+#to find the 3 best and worst countries per continent based on intercept
+AsiaBadInt <- arrange(subset(gCoefs, continent == "Asia"), intercept)
+AfricaBadInt <- arrange(subset(gCoefs, continent == "Africa"), intercept)
+EuropeBadInt <- arrange(subset(gCoefs, continent == "Europe"), intercept)
+AmericasBadInt <- arrange(subset(gCoefs, continent == "Americas"), intercept)
+finalAsia <- c("Afghanistan", "Yemen, Rep.", "Nepal", "Israel", "Japan", "Hong Kong, China")
+finalAfrica <- c("Gambia", "Sierra Leone", "Guinea", "Mauritius", "Zimbabwe", "Reunion")
+finalEurope <- c("Turkey", "Bosnia and Herzegovina", "Albania", "Netherlands", "Iceland", "Norway")
+finalAmericas <- c("Bolivia", "Haiti", "Guatemala", "Puerto Rico", "United States", "Canada")
+finalCountry <- c(finalAsia, finalAfrica, finalEurope, finalAmericas)
+bestWorstCoefs <- subset(gCoefs, country %in% finalCountry)
+bestWorstCoefs <- within(bestWorstCoefs, country <- reorder(country, intercept))
+bestWorstCountry <- subset(gDat, country %in% finalCountry)
+bestWorstCountry <- within(bestWorstCountry, country <- reorder(country, lifeExp, mean))
+
+write.table(bestWorstCoefs, "gapminderbestworstcoef.txt", quote = FALSE,
+            sep = "\t", row.names = FALSE)
+write.table(bestWorstCountry, "gapminderbestworstlife.txt", quote = FALSE,
+            sep = "\t", row.names = FALSE)
+```
+
+```{r}
+p4 <- ggplot(subset(bestWorstCountry, continent == "Asia"), aes(x = year-1952, y = lifeExp, colour = country))
+p4 + geom_point() + geom_abline(aes(intercept=intercept, slope=slope), data=subset(bestWorstCoefs, continent == "Asia")) + ylab("Life Expectancy") + xlab("Year-1952") + facet_grid(~country)
+p5 <- ggplot(subset(bestWorstCountry, continent == "Africa"), aes(x = year-1952, y = lifeExp, colour = country))
+p5 + geom_point() + geom_abline(aes(intercept=intercept, slope=slope), data=subset(bestWorstCoefs, continent == "Africa")) + ylab("Life Expectancy") + xlab("Year-1952") + facet_grid(~country)
+p6 <- ggplot(subset(bestWorstCountry, continent == "Americas"), aes(x = year-1952, y = lifeExp, colour = country))
+p6 + geom_point() + geom_abline(aes(intercept=intercept, slope=slope), data=subset(bestWorstCoefs, continent == "Americas")) + ylab("Life Expectancy") + xlab("Year-1952") + facet_grid(~country)
+p7 <- ggplot(subset(bestWorstCountry, continent == "Europe"), aes(x = year-1952, y = lifeExp, colour = country))
+p7 + geom_point() + geom_abline(aes(intercept=intercept, slope=slope), data=subset(bestWorstCoefs, continent == "Europe")) + ylab("Life Expectancy") + xlab("Year-1952") + facet_grid(~country)
+```
+These plots show scatterplots with an overlayed linear model of my creating for the best and worst 3 countries per continent for life expectancy. Zimbabwe in Africa has an interesting plot, since the life expectancy drops drastically in the late 1980s. 
+```{r include = FALSE}
+gdURL <- "http://www.stat.ubc.ca/~jenny/notOcto/STAT545A/examples/gapminder/data/gapminderCountryColors.txt"
+countryColors <- read.delim(file = gdURL, as.is = 3) # protect color
+str(countryColors)
+jColors <- countryColors$color
+names(jColors) <- countryColors$country
+head(jColors)
+jDat1 <- jDat[with(jDat, order(year, -1 * pop)), ]
+```
+### Colours
+
+Finally there are some plots produced in the name of experimentation! Here I tried RColorBrewer to improve on colours within the plots and also attempted at altering the size of points on the graphs based on population. Note here I used Jenny's file on gapminder country colours and in the final plot an error message appears as I altered the y limits to ignore an outlier!
+
+```{r}
+p8 <- ggplot(jDat, aes(x = lifeExp, y = gdpPercap))
+p8 + geom_point() + facet_wrap(~ continent) + aes(colour = country) + scale_color_manual(values = jColors) + theme(legend.position = "none") 
+p9 <- ggplot(subset(jDat, year == 2007), aes(x = lifeExp, y = gdpPercap))
+p9 + geom_point(aes(size = sqrt(pop/pi)), pch = 21, show_guide = FALSE) + scale_size_continuous(range=c(1,40))+ facet_wrap(~ continent) + aes(fill = country) + scale_fill_manual(values = jColors)
+p10 <- ggplot(subset(jDat, year == 1952), aes(x = lifeExp, y = gdpPercap))
+p10 + scale_y_continuous(limits = c(0, 20000)) +geom_point(aes(size = sqrt(pop/pi)), pch = 21, show_guide = FALSE) + scale_size_continuous(range=c(1,40))+ facet_wrap(~ continent) + aes(fill = country) + scale_fill_manual(values = jColors)
+```
+
+Danny
