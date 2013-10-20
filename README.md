@@ -1,4 +1,4 @@
-stat545a-2013-hw06_dinsdale-dan
+stat545a Final Project- Daniel Dinsdale
 ===============================
 
-Final project!
+How to run the analysis:
