@@ -8,10 +8,10 @@ The three R scripts...
 	- [`01_origData.R`](https://raw.github.com/danieldinsdale/stat545a-2013-hw06_dinsdale-dan/master/01_origData.R)
 	- [`02_newData.R`](https://raw.github.com/danieldinsdale/stat545a-2013-hw06_dinsdale-dan/master/02_newData.R)
 	- [`FinalScript.R`](https://raw.github.com/danieldinsdale/stat545a-2013-hw06_dinsdale-dan/master/FinalScript.R)
-	- [`gapminderDataFiveYear.txt`](https://raw.github.com/danieldinsdale/stat545a-2013-hw06_dinsdale-dan/blob/master/gapminderDataFiveYear.txt) And finally the data
+	- [`gapminderDataFiveYear.txt`](https://raw.github.com/danieldinsdale/stat545a-2013-hw06_dinsdale-dan/master/gapminderDataFiveYear.txt) And finally the data
 * The FinalScript.R script should be opened in RStudio and sourced with new folder as current directory.
 * Following a successful source the following files should have been created:
-	- [`gapminderOrderedContinents.txt`](https://raw.github.com/danieldinsdale/stat545a-2013-hw06_dinsdale-dan/blob/master/gapminderOrderedContinents.txt)
+	- [`gapminderOrderedContinents.txt`](https://raw.github.com/danieldinsdale/stat545a-2013-hw06_dinsdale-dan/master/gapminderOrderedContinents.txt)
 	- [`gapminderWithInterceptsOrdered.txt`](https://raw.github.com/danieldinsdale/stat545a-2013-hw06_dinsdale-dan/master/gapminderWithInterceptsOrdered.txt)
 	- [`gapminderbestworstcoef.txt`](https://raw.github.com/danieldinsdale/stat545a-2013-hw06_dinsdale-dan/master/gapminderbestworstcoef.txt)
 	- [`gapminderbestworstlife.txt`](https://raw.github.com/danieldinsdale/stat545a-2013-hw06_dinsdale-dan/master/gapminderbestworstlife.txt)
