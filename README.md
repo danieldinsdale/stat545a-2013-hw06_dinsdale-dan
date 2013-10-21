@@ -5,7 +5,7 @@ How to run the analysis:
 
 * To replicate please install the following four files into an empty folder:
 The three R scripts...
-	- [`01_origData.R`](https://github.com/danieldinsdale/stat545a-2013-hw06_dinsdale-dan/blob/master/01_origData.R)
+	- [`01_origData.R`](https://raw.github.com/danieldinsdale/stat545a-2013-hw06_dinsdale-dan/master/01_origData.R)
 	- [02_newData.R](https://github.com/danieldinsdale/stat545a-2013-hw06_dinsdale-dan/blob/master/02_newData.R)
 	- [FinalScript.R](https://github.com/danieldinsdale/stat545a-2013-hw06_dinsdale-dan/blob/master/FinalScript.R)
 	- [gapminderDataFiveYear.txt](https://github.com/danieldinsdale/stat545a-2013-hw06_dinsdale-dan/blob/master/gapminderDataFiveYear.txt) And finally the data
