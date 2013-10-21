@@ -6,8 +6,8 @@ How to run the analysis:
 * To replicate please install the following four files into an empty folder:
 The three R scripts...
 	- [`01_origData.R`](https://raw.github.com/danieldinsdale/stat545a-2013-hw06_dinsdale-dan/master/01_origData.R)
-	- [`02_newData.R`](https://raw.github.com/danieldinsdale/stat545a-2013-hw06_dinsdale-dan/blob/master/02_newData.R)
-	- [`FinalScript.R`](https://github.com/danieldinsdale/stat545a-2013-hw06_dinsdale-dan/blob/master/FinalScript.R)
+	- [`02_newData.R`](https://raw.github.com/danieldinsdale/stat545a-2013-hw06_dinsdale-dan/master/02_newData.R)
+	- [`FinalScript.R`](https://raw.github.com/danieldinsdale/stat545a-2013-hw06_dinsdale-dan/master/FinalScript.R)
 	- [`gapminderDataFiveYear.txt`](https://github.com/danieldinsdale/stat545a-2013-hw06_dinsdale-dan/blob/master/gapminderDataFiveYear.txt) And finally the data
 * The FinalScript.R script should be opened in RStudio and sourced with new folder as current directory.
 * Following a successful source the following files should have been created:
