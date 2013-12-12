@@ -19,7 +19,7 @@ p3 + geom_bar(binwidth = 1.5) + ylab("Count") + xlab("Life Expectancy")
 ggsave("LayeredHistogram.png")
 gDat <- within(gDat, continent <- reorder(continent, lifeExp, mean)) #reorder continents
 gDat <- arrange(gDat, continent) #reorder complete
-write.table(gDat, "gapminderOrderedContinents.txt", quote = FALSE,
+write.table(gDat, "gapminderOrderedContinents.tsv", quote = FALSE,
             sep = "\t", row.names = FALSE)
 #levels(jDat$continent)
 #reference http://www.stat.ubc.ca/~jenny/STAT545A/block04_dataAggregation.html
@@ -36,5 +36,5 @@ gFun <- function(x) {
 jDat <- droplevels(subset(gDat, continent != "Oceania"))
 gCoefs <- ddply(jDat, ~country + continent, gFun)
 gCoefs <- arrange(gCoefs, continent)
-write.table(gCoefs, "gapminderWithInterceptsOrdered.txt", quote = FALSE,
+write.table(gCoefs, "gapminderWithInterceptsOrdered.tsv", quote = FALSE,
             sep = "\t", row.names = FALSE)

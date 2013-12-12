@@ -3,14 +3,14 @@ library(lattice)
 library(plyr)
 require(graphics)
 library(RColorBrewer)
-gDat <- read.delim("gapminderOrderedContinents.txt")
+gDat <- read.delim("gapminderOrderedContinents.tsv")
 gDat <-
   within(gDat, {
     continent <- factor(as.character(continent), levels = unique(gDat$continent))
   })
 str(gDat$continent)
 jDat <- droplevels(subset(gDat, continent != "Oceania"))
-gCoefs <- read.delim("gapminderWithInterceptsOrdered.txt") 
+gCoefs <- read.delim("gapminderWithInterceptsOrdered.tsv") 
 gCoefs <-
   within(gCoefs, {
     continent <- factor(as.character(continent), levels = unique(gCoefs$continent))
