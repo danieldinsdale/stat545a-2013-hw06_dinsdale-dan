@@ -26,3 +26,7 @@ The three R scripts...
 	- [`GDPVsLifeExp1952WithAlteredYLimit.png`](https://raw.github.com/danieldinsdale/stat545a-2013-hw06_dinsdale-dan/master/Images/GDPVsLifeExp1952WithAlteredYLimit.png)
 	- [`GDPVsLifeExp2007.png`](https://raw.github.com/danieldinsdale/stat545a-2013-hw06_dinsdale-dan/master/Images/GDPVsLifeExp2007.png)
 * Finally if required please check the R Markdown for my RPubs document [` stat545a-2013-hw06_dinsdale-dan.Rmd`](https://raw.github.com/danieldinsdale/stat545a-2013-hw06_dinsdale-dan/master/stat545a-2013-hw06_dinsdale-dan.Rmd)
+
+Example of embedding a PNG:
+
+![](https://raw.github.com/danieldinsdale/stat545a-2013-hw06_dinsdale-dan/master/Images/GDPVsLifeExp2007.png)
